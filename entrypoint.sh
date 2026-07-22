@@ -39,6 +39,11 @@ mkdir -p /var/run/sshd 2>/dev/null || true
 # 7. Start Herdr server daemon
 nohup /usr/local/bin/herdr server >/tmp/herdr-server.log 2>&1 &
 
+# 8. Start Herdr Telegram daemon if installed
+if ls /root/.config/herdr/plugins/github/herdr-telegram-plugin-* >/dev/null 2>&1; then
+  nohup node /root/.config/herdr/plugins/github/herdr-telegram-plugin-*/dist/index.js --daemon >/tmp/herdr-telegram.log 2>&1 &
+fi
+
 echo "=== Agentic Dev Container Ready ==="
 
 if [ $# -gt 0 ]; then
