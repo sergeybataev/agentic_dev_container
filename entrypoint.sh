@@ -8,6 +8,7 @@ mkdir -p /root/.ssh \
          /history/.codex \
          /history/.antigravity \
          /history/.herdr \
+         /history/.herdr-telegram \
          /workspace/go/src/github.com/sergeybataev \
          /root/go/src/github.com
 
@@ -27,6 +28,7 @@ ln -sfn /history/.codex /root/.codex 2>/dev/null || true
 ln -sfn /history/.antigravity /root/.antigravity 2>/dev/null || true
 ln -sfn /history/.gemini /root/.gemini 2>/dev/null || true
 ln -sfn /history/.herdr /root/.config/herdr 2>/dev/null || true
+ln -sfn /history/.herdr-telegram /root/.config/herdr-telegram 2>/dev/null || true
 ln -sfn /workspace/go/src/github.com/sergeybataev /root/go/src/github.com/sergeybataev 2>/dev/null || true
 
 # 5. Refresh SSH host keys & directory
