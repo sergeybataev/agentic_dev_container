@@ -1,0 +1,47 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["@anthropic-ai/claude-code", "@openai/codex", "@opencode-ai/cli"],
+      "groupName": "ai-agent-clis",
+      "automerge": true
+    },
+    {
+      "matchPackageNames": ["ogulcancelik/herdr"],
+      "groupName": "herdr-cli",
+      "automerge": true
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "ARG HERDR_VERSION=(?<currentValue>.*?)\\n"
+      ],
+      "depNameTemplate": "ogulcancelik/herdr",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "ARG CLAUDE_CODE_VERSION=(?<currentValue>.*?)\\n"
+      ],
+      "depNameTemplate": "@anthropic-ai/claude-code",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "ARG CODEX_VERSION=(?<currentValue>.*?)\\n"
+      ],
+      "depNameTemplate": "@openai/codex",
+      "datasourceTemplate": "npm"
+    }
+  ]
+}
