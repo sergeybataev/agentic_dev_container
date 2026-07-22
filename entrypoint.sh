@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 echo "=== Initializing Agentic Dev Container ==="
 
@@ -21,18 +20,18 @@ cat /root/.ssh/*.pub 2>/dev/null >> /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys 2>/dev/null || true
 
 # 3. Git safe directory setup
-git config --global --add safe.directory "*"
+git config --global --add safe.directory "*" 2>/dev/null || true
 
 # 4. Symlink persistent history, Herdr state, and Go workspace
-ln -sfn /history/.codex /root/.codex
-ln -sfn /history/.antigravity /root/.antigravity
-ln -sfn /history/.gemini /root/.gemini
-ln -sfn /history/.herdr /root/.config/herdr
-ln -sfn /workspace/go/src/github.com/sergeybataev /root/go/src/github.com/sergeybataev
+ln -sfn /history/.codex /root/.codex 2>/dev/null || true
+ln -sfn /history/.antigravity /root/.antigravity 2>/dev/null || true
+ln -sfn /history/.gemini /root/.gemini 2>/dev/null || true
+ln -sfn /history/.herdr /root/.config/herdr 2>/dev/null || true
+ln -sfn /workspace/go/src/github.com/sergeybataev /root/go/src/github.com/sergeybataev 2>/dev/null || true
 
 # 5. Refresh SSH host keys & directory
 ssh-keygen -A 2>/dev/null || true
-mkdir -p /var/run/sshd
+mkdir -p /var/run/sshd 2>/dev/null || true
 
 # 6. Start SSH daemon
 /usr/sbin/sshd -D &
@@ -42,8 +41,8 @@ nohup /usr/local/bin/herdr server >/tmp/herdr-server.log 2>&1 &
 
 echo "=== Agentic Dev Container Ready ==="
 
-if [ $# -eq 0 ]; then
-  exec sleep infinity
-else
+if [ $# -gt 0 ]; then
   exec "$@"
+else
+  exec sleep infinity
 fi
