@@ -32,14 +32,20 @@ RUN chsh -s /bin/zsh root && \
     echo "AllowStreamLocalForwarding yes" >> /etc/ssh/sshd_config && \
     echo "export SHELL=/bin/zsh" >> /etc/profile
 
-# 3. Install Herdr CLI binary
+# 3. Install Herdr CLI, kubectl, and official Antigravity CLI (agy v1.1.5)
 ARG HERDR_VERSION=0.7.5
-RUN curl -fsSL "https://github.com/ogulcancelik/herdr/releases/download/v${HERDR_VERSION}/herdr-linux-x86_64" -o /usr/local/bin/herdr && \
-    chmod +x /usr/local/bin/herdr
-
-# 4. Install official Antigravity CLI (agy v1.1.5)
 ARG AGY_VERSION=1.1.5
-RUN curl -fsSL "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.1.5-5958982624477184/linux-x64/cli_linux_x64.tar.gz" -o /tmp/agy.tar.gz && \
+RUN ARCH=$(dpkg --print-architecture) && \
+    case "${ARCH}" in \
+      amd64) HERDR_ARCH="x86_64"; AGY_ARCH="x64"; AGY_DIR="linux-x64" ;; \
+      arm64) HERDR_ARCH="aarch64"; AGY_ARCH="arm64"; AGY_DIR="linux-arm" ;; \
+      *) HERDR_ARCH="x86_64"; AGY_ARCH="x64"; AGY_DIR="linux-x64" ;; \
+    esac && \
+    curl -fsSL "https://github.com/ogulcancelik/herdr/releases/download/v${HERDR_VERSION}/herdr-linux-${HERDR_ARCH}" -o /usr/local/bin/herdr && \
+    chmod +x /usr/local/bin/herdr && \
+    curl -fsSL "https://dl.k8s.io/release/v1.31.0/bin/linux/${ARCH}/kubectl" -o /usr/local/bin/kubectl && \
+    chmod +x /usr/local/bin/kubectl && \
+    curl -fsSL "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.1.5-5958982624477184/${AGY_DIR}/cli_linux_${AGY_ARCH}.tar.gz" -o /tmp/agy.tar.gz && \
     tar -xzf /tmp/agy.tar.gz -C /tmp && \
     mv /tmp/antigravity /usr/local/bin/agy && \
     chmod +x /usr/local/bin/agy && \
