@@ -42,4 +42,8 @@ nohup /usr/local/bin/herdr server >/tmp/herdr-server.log 2>&1 &
 
 echo "=== Agentic Dev Container Ready ==="
 
-exec "$@"
+if [ $# -eq 0 ]; then
+  exec sleep infinity
+else
+  exec "$@"
+fi
