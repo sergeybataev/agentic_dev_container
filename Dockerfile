@@ -36,15 +36,15 @@ ARG HERDR_VERSION=0.7.5
 RUN curl -fsSL "https://github.com/ogulcancelik/herdr/releases/download/v${HERDR_VERSION}/herdr-linux-x86_64" -o /usr/local/bin/herdr && \
     chmod +x /usr/local/bin/herdr
 
-# 4. Install AI Agent CLIs via npm
+# 4. Install official Antigravity CLI (agy) and AI Agent CLIs via npm
 ARG CLAUDE_CODE_VERSION=2.1.217
 ARG CODEX_VERSION=0.145.0
 ARG OPENCODE_CLI_VERSION=latest
-RUN npm install -g \
+RUN curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --dir /usr/local/bin && \
+    npm install -g \
     @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION} \
     @openai/codex@${CODEX_VERSION} \
-    @opencode-ai/cli@${OPENCODE_CLI_VERSION} && \
-    ln -sfn /usr/local/bin/claude /usr/local/bin/agy
+    @opencode-ai/cli@${OPENCODE_CLI_VERSION}
 
 # 5. Pre-install user dotfiles
 RUN git clone https://github.com/sergeybataev/dotfiles.git /root/dotfiles && \

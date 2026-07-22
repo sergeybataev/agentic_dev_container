@@ -42,6 +42,15 @@
       ],
       "depNameTemplate": "@openai/codex",
       "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "ARG AGY_VERSION=(?<currentValue>.*?)\\n"
+      ],
+      "depNameTemplate": "google-antigravity/antigravity-cli",
+      "datasourceTemplate": "github-releases"
     }
   ]
 }
