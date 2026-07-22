@@ -24,12 +24,12 @@ chmod 600 /root/.ssh/authorized_keys 2>/dev/null || true
 # 3. Git safe directory setup
 git config --global --add safe.directory "*" 2>/dev/null || true
 
-# 4. Symlink persistent history, Herdr state, and Go workspace
-ln -sfn /history/.codex /root/.codex 2>/dev/null || true
-ln -sfn /history/.antigravity /root/.antigravity 2>/dev/null || true
-ln -sfn /history/.gemini /root/.gemini 2>/dev/null || true
-ln -sfn /history/.herdr /root/.config/herdr 2>/dev/null || true
-ln -sfn /history/.herdr-telegram /root/.config/herdr-telegram 2>/dev/null || true
+# 4. Fallback symlink persistent history if not directly mounted
+[ -d /root/.codex ] || ln -sfn /history/.codex /root/.codex 2>/dev/null || true
+[ -d /root/.antigravity ] || ln -sfn /history/.antigravity /root/.antigravity 2>/dev/null || true
+[ -d /root/.gemini ] || ln -sfn /history/.gemini /root/.gemini 2>/dev/null || true
+[ -d /root/.config/herdr ] || ln -sfn /history/.herdr /root/.config/herdr 2>/dev/null || true
+[ -d /root/.config/herdr-telegram ] || ln -sfn /history/.herdr-telegram /root/.config/herdr-telegram 2>/dev/null || true
 mkdir -p /root/.local/state 2>/dev/null || true
 ln -sfn /history/.herdr-telegram-state /root/.local/state/herdr-telegram 2>/dev/null || true
 ln -sfn /workspace/go/src/github.com/sergeybataev /root/go/src/github.com/sergeybataev 2>/dev/null || true
