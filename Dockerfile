@@ -35,15 +35,16 @@ RUN chsh -s /bin/zsh root && \
 # 3. Install Herdr CLI, kubectl, and official Antigravity CLI (agy v1.1.5)
 ARG HERDR_VERSION=0.7.5
 ARG AGY_VERSION=1.1.5
-RUN ARCH=$(dpkg --print-architecture) && \
+ARG TARGETARCH
+RUN ARCH="${TARGETARCH:-amd64}" && \
     case "${ARCH}" in \
-      amd64) HERDR_ARCH="x86_64"; AGY_ARCH="x64"; AGY_DIR="linux-x64" ;; \
-      arm64) HERDR_ARCH="aarch64"; AGY_ARCH="arm64"; AGY_DIR="linux-arm" ;; \
-      *) HERDR_ARCH="x86_64"; AGY_ARCH="x64"; AGY_DIR="linux-x64" ;; \
+      amd64) HERDR_ARCH="x86_64"; AGY_ARCH="x64"; AGY_DIR="linux-x64"; KUBECTL_ARCH="amd64" ;; \
+      arm64) HERDR_ARCH="aarch64"; AGY_ARCH="arm64"; AGY_DIR="linux-arm"; KUBECTL_ARCH="arm64" ;; \
+      *) HERDR_ARCH="x86_64"; AGY_ARCH="x64"; AGY_DIR="linux-x64"; KUBECTL_ARCH="amd64" ;; \
     esac && \
     curl -fsSL "https://github.com/ogulcancelik/herdr/releases/download/v${HERDR_VERSION}/herdr-linux-${HERDR_ARCH}" -o /usr/local/bin/herdr && \
     chmod +x /usr/local/bin/herdr && \
-    curl -fsSL "https://dl.k8s.io/release/v1.31.0/bin/linux/${ARCH}/kubectl" -o /usr/local/bin/kubectl && \
+    curl -fsSL "https://dl.k8s.io/release/v1.31.0/bin/linux/${KUBECTL_ARCH}/kubectl" -o /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl && \
     curl -fsSL "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.1.5-5958982624477184/${AGY_DIR}/cli_linux_${AGY_ARCH}.tar.gz" -o /tmp/agy.tar.gz && \
     tar -xzf /tmp/agy.tar.gz -C /tmp && \
