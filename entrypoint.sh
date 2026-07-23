@@ -44,6 +44,7 @@ mkdir -p /var/run/sshd 2>/dev/null || true
 /usr/sbin/sshd -D &
 
 # 7. Start Herdr server daemon
+rm -f /root/.config/herdr/herdr.sock /root/.config/herdr/herdr-client.sock 2>/dev/null || true
 nohup /usr/local/bin/herdr server >/tmp/herdr-server.log 2>&1 &
 
 # 8. Start Herdr Telegram daemon if installed
