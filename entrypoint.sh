@@ -27,6 +27,8 @@ git config --global --add safe.directory "*" 2>/dev/null || true
 # 4. Fallback symlink persistent history if not directly mounted
 [ -d /root/.codex ] || ln -sfn /history/.codex /root/.codex 2>/dev/null || true
 [ -d /root/.antigravity ] || ln -sfn /history/.antigravity /root/.antigravity 2>/dev/null || true
+[ -d /root/.antigravity_cockpit ] || ln -sfn /history/.antigravity_cockpit /root/.antigravity_cockpit 2>/dev/null || true
+[ -d /root/.antigravity-ide ] || ln -sfn /history/.antigravity-ide /root/.antigravity-ide 2>/dev/null || true
 [ -d /root/.gemini ] || ln -sfn /history/.gemini /root/.gemini 2>/dev/null || true
 [ -d /root/.config/herdr ] || ln -sfn /history/.herdr /root/.config/herdr 2>/dev/null || true
 [ -d /root/.config/herdr-telegram ] || ln -sfn /history/.herdr-telegram /root/.config/herdr-telegram 2>/dev/null || true
