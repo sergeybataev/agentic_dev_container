@@ -32,9 +32,11 @@ RUN chsh -s /bin/zsh root && \
     echo "AllowStreamLocalForwarding yes" >> /etc/ssh/sshd_config && \
     echo "export SHELL=/bin/zsh" >> /etc/profile
 
-# 3. Install Herdr CLI, kubectl, and official Antigravity CLI (agy v1.1.5)
+# 3. Install Herdr CLI, kubectl, and official Antigravity CLI
 ARG HERDR_VERSION=0.7.5
-ARG AGY_VERSION=1.1.5
+ARG AGY_VERSION=1.2.14
+# Google's download path requires the release ID as well as the version; update both together.
+ARG AGY_RELEASE_ID=4571742832820224
 ARG TARGETARCH
 RUN ARCH="${TARGETARCH:-amd64}" && \
     case "${ARCH}" in \
@@ -46,10 +48,11 @@ RUN ARCH="${TARGETARCH:-amd64}" && \
     chmod +x /usr/local/bin/herdr && \
     curl -fsSL "https://dl.k8s.io/release/v1.31.0/bin/linux/${KUBECTL_ARCH}/kubectl" -o /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl && \
-    curl -fsSL "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.1.5-5958982624477184/${AGY_DIR}/cli_linux_${AGY_ARCH}.tar.gz" -o /tmp/agy.tar.gz && \
+    curl -fsSL "https://storage.googleapis.com/antigravity-public/antigravity-cli/${AGY_VERSION}-${AGY_RELEASE_ID}/${AGY_DIR}/cli_linux_${AGY_ARCH}.tar.gz" -o /tmp/agy.tar.gz && \
     tar -xzf /tmp/agy.tar.gz -C /tmp && \
     mv /tmp/antigravity /usr/local/bin/agy && \
     chmod +x /usr/local/bin/agy && \
+    test "$(/usr/local/bin/agy --version)" = "${AGY_VERSION}" && \
     rm -f /tmp/agy.tar.gz
 
 # 5. Install AI Agent CLIs via npm
